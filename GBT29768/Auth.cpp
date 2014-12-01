@@ -3,9 +3,7 @@
 #include "Auth.h"
 #include <iostream>
 #include "resource.h"
-
-extern "C" int Crypt_Dec_Block(unsigned char *input,int in_len,unsigned char *output,int *out_len,unsigned char *key,int keylen);
-extern "C" int Crypt_Enc_Block(unsigned char *input,int in_len,unsigned char *output,int *out_len,unsigned char *key,int keylen);
+#include "DecEnc.h"
 
 #define	sendcommand		send(ComSock,(char *)&command,sizeof(command),0)
 #define ListMessage(A) 	SendMessage(hParentWnd,WM_ListShow,A,0)
@@ -226,8 +224,8 @@ void Auth::SAuth()
 	In[1]=RNt&0xff;
 	char cAKS[16];
 	u32tochar(cAKS,AKS,4);
-	Crypt_Enc_Block((unsigned char *)&In,8,(unsigned char *)&Out,&Outlen,(unsigned char *)&cAKS,16);
-	//	Crypt_Enc_Block((unsigned char *)&Out,8,(unsigned char *)&Out2,&Outlen,(unsigned char *)&cAKS,16);
+	Enc((unsigned char *)&In,8,(unsigned char *)&Out,&Outlen,(unsigned char *)&cAKS,16);
+	//	Enc((unsigned char *)&Out,8,(unsigned char *)&Out2,&Outlen,(unsigned char *)&cAKS,16);
 	sprintf(command,"%c%c%c%s%c%c%c%c",CSAuth,RNt>>8,RNt,Out,THandle>>8,THandle,CRC>>8,CRC);
 	//	sprintf((char *)&command[11],"%c%c%c%c",THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
@@ -250,7 +248,7 @@ void Auth::Get_SAuth()
 		char cAKS[16];
 		u32tochar(cAKS,AKS,4);
 		int outlen;
-		Crypt_Dec_Block((unsigned char *)&RecvResponse[2],8,(unsigned char *)&Out,&outlen,(unsigned char *)&cAKS,16);
+		Dec((unsigned char *)&RecvResponse[2],8,(unsigned char *)&Out,&outlen,(unsigned char *)&cAKS,16);
 		rRNr=(((int)Out[0]<<8)&0xff00)|((int)Out[1]&0xff);
 		if (rRNr==RNr)
 			ListMessage(IDS_TagAuthSucceed); 
@@ -273,7 +271,7 @@ void Auth::Mul_Auth()
 	memset(Out,0,9);
 
 	sprintf(In,"%c%c%c%c",RNr>>8,RNr,RNt>>8,RNt);
-	Crypt_Enc_Block((unsigned char *)&In,8,(unsigned char *)&Out,&outlen,(unsigned char *)&cAKS,16);
+	Enc((unsigned char *)&In,8,(unsigned char *)&Out,&outlen,(unsigned char *)&cAKS,16);
 	sprintf(command,"%c%c%c%s%c%c%c%c",CMul_Auth,RNt>>8,RNt,Out,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
 	ListMessage(IDS_Mul_Auth);
