@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Auth.h" />
+    <ClInclude Include="DecEnc.h" />
     <ClInclude Include="GBT29768.h" />
     <ClInclude Include="GBT29768Dlg.h" />
     <ClInclude Include="Resource.h" />
