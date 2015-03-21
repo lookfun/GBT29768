@@ -42,4 +42,6 @@ public:
 	CString csAKS3;
 	CString csAKS4;
 	afx_msg void OnBnClickedSet();
+	CString csTID1;
+	CString csTID2;
 };
