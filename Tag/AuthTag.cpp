@@ -20,7 +20,7 @@ int BitCount(unsigned int n)
 int Rand16()
 {
 	int temp;
-	srand(rand());
+	srand(rand()+clock());
 	temp=int((65535)*rand()/(RAND_MAX + 1.0));
 	return temp;
 }

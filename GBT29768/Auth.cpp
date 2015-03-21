@@ -5,8 +5,10 @@
 #include "resource.h"
 #include "DecEnc.h"
 
+#define ListData(A,B)		SendMessage(hParentWnd,WM_ListShow,(A),B)
 #define	sendcommand		send(ComSock,(char *)&command,sizeof(command),0)
-#define ListMessage(A) 	SendMessage(hParentWnd,WM_ListShow,A,0)
+
+#define ListMessage(A)	SendMessage(hParentWnd,WM_ListShow,A,0)
 #define Re				recv(ComSock,RecvResponse,100,0)
 #define ShiftL(A,B)		(A<<B)|(A>>(16-B))
 
@@ -20,7 +22,7 @@ int BitCount(unsigned int n)
 int Rand16()
 {
 	int temp;
-	srand(rand());
+	srand(rand()+clock());
 	temp=int((65535)*rand()/(RAND_MAX + 1.0));
 	return temp;
 }
@@ -40,8 +42,11 @@ void Auth::Get_SecPara()
 	u8 command[6];
 	sprintf((char *)&command,"%c%c%c%c%c",CGet_SecPara,THandle>>8,THandle&0xff,CRC>>8,CRC);
 	sendcommand;
+
 	ListMessage(IDS_SendGetSP);
+	ListData((unsigned)(&command),sizeof(command));
 	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	u16 secpa[3];
 	secpa[0]=RecvResponse[0]*0x100+RecvResponse[1];
 	secpa[1]=RecvResponse[2]*0x100+RecvResponse[3];
@@ -134,8 +139,11 @@ void Auth::Req_XAuth()
 	u8 command[6];
 	sprintf((char *)&command,"%c%c%c%c%c",CReq_XAuth,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
+
 	ListMessage(IDS_Req_XAuth);
-	int len=Re;
+	ListData((unsigned)(&command),sizeof(command));
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	u16 SRNt;
 	SRNt=(RecvResponse[0]<<8&0xff00)|(RecvResponse[1]&0xff);
 	//RNt=(SRNt^AKX+0xAAAB)&0xffff;
@@ -150,7 +158,9 @@ void Auth::XAuth()
 	char command[8];
 	sprintf(command,"%c%c%c%c%c%c%c",CXAuth,SORNt>>8,SORNt,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
+
 	ListMessage(IDS_XAuth);
+	ListData((unsigned)(&command),sizeof(command));
 }
 void Auth::Get_XAuth()
 {
@@ -159,9 +169,12 @@ void Auth::Get_XAuth()
 	u16 SRNr=((RNr+On)&0xffff)^AKX;
 	sprintf(command,"%c%c%c%c%c%c%c",CGet_XAuth,SRNr>>8,SRNr,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
-	ListMessage(IDS_Get_XAuth);
 
-	int len=Re;
+	ListMessage(IDS_Get_XAuth);
+	ListData((unsigned)(&command),sizeof(command));
+
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	u16 SORNr=(RecvResponse[0]<<8&0xff00)|(RecvResponse[1]&0xff);
 	int p=BitCount(RNr);
 	u16 RNrp=ShiftL(RNr,p);
@@ -182,9 +195,11 @@ void Auth::Req_XAuth_EX()
 	u16 SRNr=((RNr+On)&0xffff)^AKX;
 	sprintf(command,"%c%c%c%c%c%c%c",CReq_XAuth_Ex,SRNr>>8,SRNr,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
-	ListMessage(IDS_Req_XAuth_EX);
 
-	int len=Re;
+	ListMessage(IDS_Req_XAuth_EX);
+	ListData((unsigned)(&command),sizeof(command));
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	u16 SORNr=(RecvResponse[0]<<8&0xff00)|(RecvResponse[1]&0xff);
 	u16 SRNt=(RecvResponse[2]<<8&0xff00)|(RecvResponse[3]&0xff);
 	int p=BitCount(RNr);
@@ -207,8 +222,11 @@ void Auth::Req_SAuth()
 	char command[6];
 	sprintf(command,"%c%c%c%c%c",CReq_SAuth,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
+
 	ListMessage(IDS_Req_SAuth);
-	int len=Re;
+	ListData((unsigned)(&command),sizeof(command));
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	RNt=(RecvResponse[0]<<8&0xff00)|(RecvResponse[1]&0xff);
 }
 void Auth::SAuth()
@@ -229,8 +247,10 @@ void Auth::SAuth()
 	sprintf(command,"%c%c%c%s%c%c%c%c",CSAuth,RNt>>8,RNt,Out,THandle>>8,THandle,CRC>>8,CRC);
 	//	sprintf((char *)&command[11],"%c%c%c%c",THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
+
 	//	send(ComSock,command,15,0);
 	ListMessage(IDS_SAuth);
+	ListData((unsigned)(&command),sizeof(command));
 }
 void Auth::Get_SAuth()
 {
@@ -238,9 +258,11 @@ void Auth::Get_SAuth()
 	RNr=Rand16();
 	sprintf(command,"%c%c%c%c%c%c%c",CGet_SAuth,RNr>>8,RNr,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
-	ListMessage(IDS_Get_SAuth);
 
-	int len=Re;
+	ListMessage(IDS_Get_SAuth);
+	ListData((unsigned)(&command),sizeof(command));
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	u16 rRNr=(RecvResponse[0]<<8&0xff00)|(RecvResponse[1]);
 	if (rRNr==RNr)
 	{
@@ -274,10 +296,12 @@ void Auth::Mul_Auth()
 	Enc((unsigned char *)&In,8,(unsigned char *)&Out,&outlen,(unsigned char *)&cAKS,16);
 	sprintf(command,"%c%c%c%s%c%c%c%c",CMul_Auth,RNt>>8,RNt,Out,THandle>>8,THandle,CRC>>8,CRC);
 	sendcommand;
-	ListMessage(IDS_Mul_Auth);
 
-	int len=Re;
-	if (len==6)
+	ListMessage(IDS_Mul_Auth);
+	ListData((unsigned)(&command),sizeof(command));
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
+	if (recvlen==6)
 	{
 		switch (RecvResponse[0]&0xff)
 		{
@@ -372,7 +396,8 @@ void Auth::SetSecPara(u16 * secpa)
 }
 void Auth::waitRDP()
 {
-	int len=Re;
+	int recvlen=Re;
+	ListData((unsigned)(&RecvResponse),recvlen);
 	switch (RecvResponse[0]&0xff)
 	{
 	case 0x00:

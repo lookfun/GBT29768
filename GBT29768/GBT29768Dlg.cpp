@@ -119,7 +119,31 @@ HCURSOR CGBT29768Dlg::OnQueryDragIcon()
 afx_msg LRESULT CGBT29768Dlg::OnListShow(WPARAM wParam,LPARAM lParam)
 {
 	CString showstring;
+	if (lParam==0)
+	{
 	showstring.LoadString(wParam);
+	}
+	else
+	{
+		char *cstr=new char[2*lParam+1];
+		cstr[2*lParam]=0;
+		char *head=cstr;
+		while(lParam>1)
+		{
+		showstring.AppendFormat("%02x",((char *)wParam)[0]&0xff);
+		lParam--;
+		wParam++;
+		}
+		
+		while(lParam>1)
+		{
+			sprintf(cstr,"%02x",((char *)wParam)[0]&0xff);
+			cstr+=2;
+			wParam++;
+			lParam--;
+		}
+
+	}
 	m_List.InsertString(-1,showstring);
 	return 1;
 	/*
