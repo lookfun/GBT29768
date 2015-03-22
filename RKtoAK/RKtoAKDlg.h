@@ -34,4 +34,11 @@ public:
 	CString csRK2;
 	CString csRK3;
 	CString csRK4;
+	CString csTID1;
+	CString csTID2;
+	CString csAK1;
+	CString csAK2;
+	CString csAK3;
+	CString csAK4;
+	afx_msg void OnBnClickedButton2();
 };

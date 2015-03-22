@@ -51,6 +51,9 @@
     <ClInclude Include="DecEnc.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\RKtoAK\SMS4DLLextern.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GBT29768.cpp">

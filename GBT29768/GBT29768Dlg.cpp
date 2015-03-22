@@ -76,6 +76,10 @@ BOOL CGBT29768Dlg::OnInitDialog()
 	// TODO: 在此添加额外的初始化代码
 	hParentWnd=m_hWnd;
 	m_AKX=0;
+	csRK1.Format("11223344");
+	csRK2.Format("55667788");
+	csRK3.Format("9900aabb");
+	csRK4.Format("ccddeeff");
 	UpdateData(FALSE);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }

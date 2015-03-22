@@ -4,7 +4,7 @@
 #include <iostream>
 #include "resource.h"
 #include "DecEnc.h"
-
+#include "SMS4DLLextern.h"
 #define ListData(A,B)		SendMessage(hParentWnd,WM_ListShow,(A),B)
 #define	sendcommand		send(ComSock,(char *)&command,sizeof(command),0)
 
@@ -53,27 +53,36 @@ void Auth::Get_SecPara()
 	secpa[2]=RecvResponse[4]*0x100+RecvResponse[5];
 	SetSecPara(secpa);
 	ListMessage(IDS_SPGetted);
-	TID[0]=RecvResponse[6];
-	TID[0]=TID[0]<<8+RecvResponse[7];
-	TID[0]=TID[0]<<8+RecvResponse[8];
-	TID[0]=TID[0]<<8+RecvResponse[9];
-	TID[0]=TID[0]<<8+RecvResponse[10];
-	TID[0]=TID[0]<<8+RecvResponse[11];
-	TID[0]=TID[0]<<8+RecvResponse[12];
-	TID[0]=TID[0]<<8+RecvResponse[13];
-	TID[1]=RecvResponse[14];
-	TID[1]=TID[1]<<8+RecvResponse[15];
-	TID[1]=TID[1]<<8+RecvResponse[16];
-	TID[1]=TID[1]<<8+RecvResponse[17];
-	TID[1]=TID[1]<<8+RecvResponse[18];
-	TID[1]=TID[1]<<8+RecvResponse[19];
-	TID[1]=TID[1]<<8+RecvResponse[20];
-	TID[1]=TID[1]<<8+RecvResponse[21];
+	TID[0]=(unsigned int)RecvResponse[6]&0xff;
+	TID[0]=(TID[0]<<8);	TID[0]|=RecvResponse[7]&0xff;
+	TID[0]=(TID[0]<<8);	TID[0]|=RecvResponse[8]&0xff;
+	TID[0]=(TID[0]<<8);	TID[0]|=RecvResponse[9]&0xff;
+
+	TID[1]=(unsigned int)RecvResponse[10]&0xff;
+	TID[1]=(TID[1]<<8);
+	TID[1]|=RecvResponse[11]&0xff;
+	TID[1]=(TID[1]<<8);	
+	TID[1]|=RecvResponse[12]&0xff;
+	TID[1]=(TID[1]<<8);	
+	TID[1]|=RecvResponse[13]&0xff;
+//	TID[1]=RecvResponse[14];
+//	TID[1]=TID[1]<<8+RecvResponse[15];
+//	TID[1]=TID[1]<<8+RecvResponse[16];
+//	TID[1]=TID[1]<<8+RecvResponse[17];
+//	TID[1]=TID[1]<<8+RecvResponse[18];
+//	TID[1]=TID[1]<<8+RecvResponse[19];
+//	TID[1]=TID[1]<<8+RecvResponse[20];
+//	TID[1]=TID[1]<<8+RecvResponse[21];
 	ListMessage(IDS_TIDGetted);
 
 	if (!AKSgeted)
 	{
-		//AKS=
+		unsigned int RK[4];
+		AKS[0]=TID[0];
+		AKS[1]=TID[1];
+		AKS[2]=0;
+		AKS[3]=0;
+		sms4_encrypt(&AKS[0],(unsigned int *)&RKS[0]);
 		AKSgeted=true;
 	}
 }

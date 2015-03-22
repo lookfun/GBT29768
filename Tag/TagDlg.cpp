@@ -83,6 +83,12 @@ BOOL CTagDlg::OnInitDialog()
 	// TODO: 在此添加额外的初始化代码
 	m_TID1=0;
 	m_TID2=0;
+	csTID1.Format("12345678");
+	csTID2.Format("90abcdef");
+	csAKS1.Format("511ab853");
+	csAKS2.Format("b231a79a");
+	csAKS3.Format("36508464");
+	csAKS4.Format("e1858e50");
 	m_AKX=0;
 	UpdateData(FALSE);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -139,8 +145,8 @@ void CTagDlg::OnBnClickedSet()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(true);
-//	authtag.TID[0]=m_TID1;
-//	authtag.TID[1]=m_TID2;
+	//	authtag.TID[0]=m_TID1;
+	//	authtag.TID[1]=m_TID2;
 	char *cTID1=(LPSTR)(LPCTSTR)csTID1;
 	char *cTID2=(LPSTR)(LPCTSTR)csTID2;
 	authtag.TID[0]=strtoul(cTID1,NULL,16);
@@ -170,98 +176,98 @@ afx_msg LRESULT CTagDlg::OnListShow(WPARAM wParam,LPARAM lParam)
 	switch (wParam)
 	{
 	case IDS_Connecting:
-		showstring.LoadString(IDS_Connecting);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_Connecting);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_Connected:
-		showstring.LoadString(IDS_Connected);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_Connected);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_Waiting:
-		showstring.LoadString(IDS_Waiting);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_Waiting);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvGet_SecPara:
-		showstring.LoadString(IDS_recvGet_SecPara);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvGet_SecPara);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvReq_XAuth:
-		showstring.LoadString(IDS_recvReq_XAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvReq_XAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvXAuth:
-		showstring.LoadString(IDS_recvXAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvXAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvGet_XAuth:
-		showstring.LoadString(IDS_recvGet_XAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvGet_XAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvReq_XAuth_EX:
-		showstring.LoadString(IDS_recvReq_XAuth_EX);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvReq_XAuth_EX);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvReq_SAuth:
-		showstring.LoadString(IDS_recvReq_SAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvReq_SAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvGet_SAuth:
-		showstring.LoadString(IDS_recvGet_SAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvGet_SAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_recvAuth_EX:
-		showstring.LoadString(IDS_recvAuth_EX);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_recvAuth_EX);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_reGet_SecPara:
-		showstring.LoadString(IDS_reGet_SecPara);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_reGet_SecPara);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_DisConnected:
-		showstring.LoadString(IDS_DisConnected);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_DisConnected);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_reReq_XAuth:
-		showstring.LoadString(IDS_reReq_XAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_reReq_XAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_reXAuth:
-		showstring.LoadString(IDS_reXAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_reXAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_AuthSucceed:
-		showstring.LoadString(IDS_AuthSucceed);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_AuthSucceed);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_AuthFailed:
-		showstring.LoadString(IDS_AuthFailed);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_AuthFailed);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	case IDS_reGet_XAuth:
-		showstring.LoadString(IDS_reGet_XAuth);
-		m_List.InsertString(-1,showstring);
-		return 1;
-		break;
+	showstring.LoadString(IDS_reGet_XAuth);
+	m_List.InsertString(-1,showstring);
+	return 1;
+	break;
 	default:
-		return 0;
-		break;
+	return 0;
+	break;
 	}
 	*/
 }

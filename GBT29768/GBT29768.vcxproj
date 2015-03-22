@@ -58,7 +58,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SM7.lib;</AdditionalDependencies>
+      <AdditionalDependencies>SM7.lib;SMS4DLL.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -103,6 +103,7 @@
     <None Include="res\GBT29768.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\RKtoAK\SMS4DLLextern.h" />
     <ClInclude Include="Auth.h" />
     <ClInclude Include="DecEnc.h" />
     <ClInclude Include="GBT29768.h" />
