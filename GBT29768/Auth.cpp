@@ -70,6 +70,12 @@ void Auth::Get_SecPara()
 	TID[1]=TID[1]<<8+RecvResponse[20];
 	TID[1]=TID[1]<<8+RecvResponse[21];
 	ListMessage(IDS_TIDGetted);
+
+	if (!AKSgeted)
+	{
+		//AKS=
+		AKSgeted=true;
+	}
 }
 void Auth::selectAuthMode()
 {
