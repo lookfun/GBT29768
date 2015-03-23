@@ -126,7 +126,7 @@ void AuthTag::reGet_SecPara()
 {
 	char recommand[19];
 	SecParaTag[0]=(0x1<<(14-AuthMode))|0x8000;
-	SecParaTag[1]=0x0700;
+	SecParaTag[1]=0x0710;
 	SecParaTag[3]=RKindex;
 	char cSecPara[6];
 	char cTID[8];
