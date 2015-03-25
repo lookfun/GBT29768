@@ -207,7 +207,6 @@ afx_msg LRESULT CGBT29768Dlg::OnListShow(WPARAM wParam,LPARAM lParam)
 
 void CGBT29768Dlg::OnBnClickedConnect()
 {
-
 	HANDLE hthread1;
 	hthread1=CreateThread(NULL,0,ComThread,hParentWnd,0,NULL);
 	CloseHandle(hthread1);
